@@ -111,6 +111,7 @@ module Tmptation
           instance.safe_delete
           instance.close
         end
+        instances.clear
       end
       alias -@ delete_all
     end
@@ -156,6 +157,7 @@ module Tmptation
       # Safe deletes and closes all instances
       def delete_all
         instances.each {|instance| instance.safe_delete }
+        instances.clear
       end
       alias -@ delete_all
     end

@@ -187,6 +187,18 @@ describe Tmptation::TmpFile do
       foo.delete if foo.path.exist?
     end
   end
+
+  it "should clear the instance references" do
+    begin
+      foo = TmpFile.new
+      assert_equal [foo], TmpFile.instances
+
+      TmpFile.delete_all
+      assert_empty TmpFile.instances
+    ensure
+      foo.delete if foo.path.exist?
+    end
+  end
 end
 
 describe Tmptation::TmpDir do
@@ -248,6 +260,18 @@ describe Tmptation::TmpDir do
       TmpDir.delete_all
 
       RR.verify
+    ensure
+      foo.rmdir if foo.exist?
+    end
+  end
+
+  it "should clear the instance references" do
+    begin
+      foo = TmpDir.new
+      assert_equal [foo], TmpDir.instances
+
+      TmpDir.delete_all
+      assert_empty TmpDir.instances
     ensure
       foo.rmdir if foo.exist?
     end
