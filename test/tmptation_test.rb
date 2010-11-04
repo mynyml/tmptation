@@ -39,13 +39,10 @@ describe Tmptation::SafeDeletable do
 
   it "should refuse to delete a non-tmp directory" do
     begin
-      dir = Pathname(ENV['HOME']).join("tmptation-tmpdir-#{Time.now.to_f}").expand_path
+      dir = Pathname(Dir.mktmpdir('SafeDeletable-')).expand_path
       dir.extend(SafeDeletable)
 
-      refute dir.exist?
-      dir.mkdir
-      
-      assert dir.exist?
+      stub(dir).to_s { '/not/a/tmp/dir' }
       refute_match /^#{Regexp.quote(Dir.tmpdir)}/, dir.to_s
 
       assert_raises(SafeDeletable::UnsafeDelete) { dir.safe_delete }

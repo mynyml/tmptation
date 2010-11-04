@@ -32,17 +32,16 @@ module Tmptation
   module SafeDeletable
     UnsafeDelete = Class.new(RuntimeError)
 
-    # Delete `#path` or `#to_s` if it exists, and only if it lives within `Dir.tmpdir`
+    # Delete `#path` or `#to_s` if it exists, and only if it lives within
+    # `Dir.tmpdir`. If the path is a directory, it is deleted recursively.
     #
     # @raises SafeDeletable::UnsafeDelete if directory isn't within `Dir.tmpdir`
     #
     def safe_delete
       path = self.respond_to?(:path) ? self.path : self.to_s
-      path = Pathname(path)
+      path = Pathname(path).expand_path
 
-      return unless path.exist?
-
-      unless path.expand_path.to_s.match(/^#{Regexp.escape(Dir.tmpdir)}/)
+      unless path.to_s.match(/^#{Regexp.escape(Dir.tmpdir)}/)
         raise UnsafeDelete.new("refusing to remove non-tmp directory '#{path}'")
       end
       FileUtils.remove_entry_secure(path.to_s)
