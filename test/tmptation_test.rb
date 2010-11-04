@@ -13,6 +13,12 @@ end
 require 'tmptation'
 include  Tmptation
 
+describe Tmptation do
+  it "should have a version" do
+    assert_kind_of Float, Tmptation::VERSION
+  end
+end
+
 describe Tmptation::SafeDeletable do
 
   it "should delete a tmp directory" do
