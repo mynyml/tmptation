@@ -136,6 +136,17 @@ module Tmptation
     end
   end
 
+  # Subclass of core lib's Pathname that allows safely deleting all of its
+  # instances.
+  #
+  # @example
+  #
+  #     path = TmpDir.new
+  #     path.exist?  #=> true
+  #
+  #     TmpDir.delete_all
+  #     path.exist?  #=> false
+  #
   class TmpDir < Pathname
     include SafeDeletable
     include InstanceTracking
