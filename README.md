@@ -45,14 +45,10 @@ Protip
 If you use Tmptation in specs, add `TmpFile.delete_all` and `TmpDir.delete_all`
 to your global teardown method:
 
-    module MiniTest
-      class Unit
-        class TestCase
-          def teardown
-            TmpFile.delete_all
-            TmpDir.delete_all
-          end
-        end
+    class MiniTest::Unit::TestCase
+      def teardown
+        TmpFile.delete_all
+        TmpDir.delete_all
       end
     end
 
