@@ -67,6 +67,14 @@ describe Tmptation::SafeDeletable do
     end
   end
 
+  it "should handle nonexistent entries" do
+    dir = Pathname(Dir.tmpdir).join("nonexistentdir-#{Time.now.to_f}")
+    dir.extend(SafeDeletable)
+
+    refute dir.exist?
+    dir.safe_delete #refute raises
+  end
+
   it "should use an object's #path if it exists" do
     begin
       file = Tempfile.new('safe_deletable')

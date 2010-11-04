@@ -45,6 +45,8 @@ module Tmptation
         raise UnsafeDelete.new("refusing to remove non-tmp directory '#{path}'")
       end
       FileUtils.remove_entry_secure(path.to_s)
+    rescue Errno::ENOENT
+      # noop
     end
   end
 
