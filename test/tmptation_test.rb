@@ -284,5 +284,18 @@ describe Tmptation::TmpDir do
       foo.rmdir if foo.exist?
     end
   end
+
+  it "should preserve existing Pathname behaviour" do
+    begin
+      foo = TmpDir.new('prefix-')
+
+      assert_equal Dir.tmpdir, foo.dirname.to_s
+      assert_match /^\//, foo.expand_path
+      assert_match /^\.\./, foo.relative_path_from(Pathname(Dir.pwd))
+      assert_match /^prefix-/, foo.basename
+    ensure
+      foo.rmdir if foo.exist?
+    end
+  end
 end
 

@@ -168,7 +168,12 @@ module Tmptation
     #   prefix of directory name
     #
     def initialize(prefix='TmpDir-')
-      super(Pathname(Dir.mktmpdir(prefix)).expand_path)
+      # The `caller` lookup is used to determine if `::new` is being called
+      # from within `Pathname`. This is necessary since many `Pathname` methods
+      # call `self.class.new` internally, and these calls shouldn't create a
+      # new tmp dir. Not the cleanest approach, but allows keeping a simple and
+      # clean api.
+      caller[1].match(/pathname\.rb/) ? super : super(Pathname(Dir.mktmpdir(prefix)).expand_path)
     end
   end
 end
