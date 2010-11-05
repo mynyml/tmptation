@@ -4,7 +4,7 @@ require 'tmpdir'
 require 'fileutils'
 
 module Tmptation
-  VERSION = 1.2
+  VERSION = 1.3
 
   # Adds a #safe_delete method that will delete the object's associated path
   # (either #path or #to_s, if it exists) only if it lives within the system's
