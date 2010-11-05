@@ -5,8 +5,8 @@ directories. Especially useful for use in tests.
 
 Features
 --------
-* garbage collection of all created tmp files and dirs
-* safe deletion - will refuse to delete non-tmp paths (where tmp within `Dir.tmpdir`)
+* easy garbage collection of all created tmp files and dirs with `.delete_all`
+* safe deletion - will refuse to delete non-tmp paths (as determined by `Dir.tmpdir`)
 
 Examples
 --------
@@ -42,7 +42,7 @@ They might be useful on their own. See the inline docs for more details.
 Protip
 ------
 
-If you use Tmptation in specs, add `TmpFile.delete_all` and `TmpDir.delete_all`
+If you use Tmptation in tests, add `TmpFile.delete_all` and `TmpDir.delete_all`
 to your global teardown method:
 
     class MiniTest::Unit::TestCase
