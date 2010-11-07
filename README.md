@@ -13,24 +13,24 @@ Examples
 
     # TmpFile is a subclass of Tempfile, with a few additions
 
-    file = TmpFile.new('name', 'contents')
+    file = Tmptation::TmpFile.new('name', 'contents')
 
     file.path.exist?  #=> true
     file.closed?      #=> false
     file.read         #=> "contents"
 
-    TmpFile.delete_all
+    Tmptation::TmpFile.delete_all
 
     file.path.exist?  #=> false
     file.closed?      #=> true
 
 
-    # TmpDir is a subclass of Pathname, with a few additions
+    # TmpDir behaves like Pathname, with a few additions
 
-    path = TmpDir.new
+    path = Tmptation::TmpDir.new
     path.exist?  #=> true
 
-    TmpDir.delete_all
+    Tmptation::TmpDir.delete_all
     path.exist?  #=> false
 
 Mixins
