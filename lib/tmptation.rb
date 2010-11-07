@@ -2,6 +2,7 @@ require 'pathname'
 require 'tempfile'
 require 'tmpdir'
 require 'fileutils'
+require 'forwardable'
 
 module Tmptation
   VERSION = 1.3
@@ -139,8 +140,8 @@ module Tmptation
     end
   end
 
-  # Subclass of core lib's Pathname that allows safely deleting all of its
-  # instances.
+  # Temporary directory object which behaves like core lib's Pathname, and
+  # allows safely deleting all of its instances.
   #
   # @example
   #
@@ -150,7 +151,8 @@ module Tmptation
   #     TmpDir.delete_all
   #     path.exist?  #=> false
   #
-  class TmpDir < Pathname
+  class TmpDir
+    extend  Forwardable
     include SafeDeletable
     include InstanceTracking
 
@@ -164,16 +166,34 @@ module Tmptation
       alias -@ delete_all
     end
 
+    # temporary directory's path as a Pathname
+    #
+    # @return path<Pathname>
+    #
+    attr_reader :path
+
     # @param prefix<String> optional
     #   prefix of directory name
     #
     def initialize(prefix='TmpDir-')
-      # The `caller` lookup is used to determine if `::new` is being called
-      # from within `Pathname`. This is necessary since many `Pathname` methods
-      # call `self.class.new` internally, and these calls shouldn't create a
-      # new tmp dir. Not the cleanest approach, but allows keeping a simple and
-      # clean api.
-      caller[1].match(/pathname\.rb/) ? super : super(Pathname(Dir.mktmpdir(prefix)).expand_path)
+      super()
+      @path = Pathname(Dir.mktmpdir(prefix)).expand_path
+    end
+
+    def_delegator :@path, :to_s
+
+    # Delegate Pathname methods to #path
+    #
+    # Allows TmpDir to behave like Pathname without having to use inheritence
+    # (which causes all sorts of issues).
+    #
+    def method_missing(name, *args) #:nodoc:
+      if path.respond_to?(name)
+        self.class.def_delegator :@path, name #method inlining
+        send(name, *args)
+      else
+        super
+      end
     end
   end
 end
