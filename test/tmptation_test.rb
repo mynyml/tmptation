@@ -110,6 +110,19 @@ describe Tmptation do
         dir.rmdir if dir.exist?
       end
     end
+
+    it "should refuse to #safe_delete_contents for files" do
+      begin
+        file = Tempfile.new('safe_deletable')
+        file.extend(SafeDeletable)
+
+        assert File.exist?(file.path)
+
+        assert_raises(Errno::ENOTDIR) { file.safe_delete_contents }
+      ensure
+        file.delete if File.exist?(file)
+      end
+    end
   end
 
   describe InstanceTracking do
