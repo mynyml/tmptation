@@ -89,6 +89,27 @@ describe Tmptation do
         file.delete if File.exist?(file)
       end
     end
+
+    it "should delete a directory's contents" do
+      begin
+        dir = Pathname(Dir.mktmpdir('SafeDeletable-')).expand_path
+        dir.extend(SafeDeletable)
+
+        sub = dir.join('foo')
+        sub.mkdir
+
+        assert dir.exist?
+        assert sub.exist?
+
+        dir.safe_delete_contents
+
+        assert dir.exist?
+        refute sub.exist?
+      ensure
+        sub.rmdir if sub.exist?
+        dir.rmdir if dir.exist?
+      end
+    end
   end
 
   describe InstanceTracking do
