@@ -15,7 +15,7 @@ include  Tmptation
 
 describe Tmptation do
   it "should have a version" do
-    assert_kind_of Float, Tmptation::VERSION
+    assert_kind_of String, Tmptation::VERSION
   end
 
   describe SafeDeletable do

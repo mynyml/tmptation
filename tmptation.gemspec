@@ -1,4 +1,5 @@
-require 'lib/tmptation'
+require 'pathname'
+require  Pathname(__FILE__).dirname + 'lib/tmptation/version'
 
 Gem::Specification.new do |s|
   s.name                = "tmptation"

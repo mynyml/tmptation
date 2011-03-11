@@ -4,8 +4,9 @@ require 'tmpdir'
 require 'fileutils'
 require 'forwardable'
 
+require 'tmptation/version'
+
 module Tmptation
-  VERSION = 1.5
 
   # Adds a #safe_delete method that will delete the object's associated path
   # (either #path or #to_s, if it exists) only if it lives within the system's
