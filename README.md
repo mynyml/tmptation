@@ -11,27 +11,29 @@ Features
 Examples
 --------
 
-    # TmpFile is a subclass of Tempfile, with a few additions
+```ruby
+# TmpFile is a subclass of Tempfile, with a few additions
 
-    file = Tmptation::TmpFile.new('name', 'contents')
+file = Tmptation::TmpFile.new('name', 'contents')
 
-    file.path.exist?  #=> true
-    file.closed?      #=> false
-    file.read         #=> "contents"
+file.path.exist?  #=> true
+file.closed?      #=> false
+file.read         #=> "contents"
 
-    Tmptation::TmpFile.delete_all
+Tmptation::TmpFile.delete_all
 
-    file.path.exist?  #=> false
-    file.closed?      #=> true
+file.path.exist?  #=> false
+file.closed?      #=> true
 
 
-    # TmpDir behaves like Pathname, with a few additions
+# TmpDir behaves like Pathname, with a few additions
 
-    path = Tmptation::TmpDir.new
-    path.exist?  #=> true
+path = Tmptation::TmpDir.new
+path.exist?  #=> true
 
-    Tmptation::TmpDir.delete_all
-    path.exist?  #=> false
+Tmptation::TmpDir.delete_all
+path.exist?  #=> false
+```
 
 Mixins
 ------
@@ -45,10 +47,11 @@ Protip
 If you use Tmptation in tests, add `TmpFile.delete_all` and `TmpDir.delete_all`
 to your global teardown method:
 
-    class MiniTest::Unit::TestCase
-      def teardown
-        TmpFile.delete_all
-        TmpDir.delete_all
-      end
-    end
-
+```ruby
+class MiniTest::Unit::TestCase
+  def teardown
+    TmpFile.delete_all
+    TmpDir.delete_all
+  end
+end
+```
